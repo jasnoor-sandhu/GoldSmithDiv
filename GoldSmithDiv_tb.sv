@@ -1,12 +1,13 @@
 module tb();
 
-reg reset,start,clk;
+reg reset,start,clk,stop;
 reg [31:0] dividend,divisor,out;
 
 goldSmithDiv dut(
     .clk(clk),
     .reset(reset),
     .start(start),
+    .stop(stop),
     .dividend(dividend),
     .divisor(divisor),
     .out(out)
@@ -22,6 +23,7 @@ initial begin
     clk = 0;
     reset = 1;
     start = 0;
+    stop = 0;
 end
 
 initial begin
@@ -32,7 +34,9 @@ end
 
 initial begin
   $dumpfile("dump.vcd"); $dumpvars;
-    #102 $finish;
+    #50 stop = 1;
+    #10 stop = 0;
+    #40 $finish;
 end
 
 initial begin
